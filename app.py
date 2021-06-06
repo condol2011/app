@@ -3,21 +3,21 @@ import yfinance as yf
 import altair as alt
 import streamlit as st
 
-st.title('邀ｳ蝗ｽ譬ｪ萓｡蜿ｯ隕門喧繧｢繝励Μ')
+st.title('米国株価可視化アプリ')
 
 st.sidebar.write("""
-# GAFA譬ｪ萓｡
-縺薙■繧峨�ｯ譬ｪ萓｡蜿ｯ隕門喧繝�繝ｼ繝ｫ縺ｧ縺吶ゆｻ･荳九�ｮ繧ｪ繝励す繝ｧ繝ｳ縺九ｉ陦ｨ遉ｺ譌･謨ｰ繧呈欠螳�
+# GAFA株価
+こちらは株価可視化ツールです。以下のオプションから表示日数を指定
 """)
 
 st.sidebar.write("""
-## 陦ｨ遉ｺ譌･謨ｰ驕ｸ謚�
+## 表示日数選択
 """)
 
-days = st.sidebar.slider('譌･謨ｰ', 1, 50, 20)
+days = st.sidebar.slider('日数', 1, 50, 20)
 
 st.write(f"""
-### 驕主悉 **{days}譌･髢�** 縺ｮGAFA縺ｮ譬ｪ萓｡
+### 過去 **{days}日間** のGAFA株価
 """)
 
 @st.cache
@@ -36,10 +36,10 @@ def get_data(days, tickers):
 
 try:
     st.sidebar.write("""
-    ## 譬ｪ萓｡縺ｮ遽�蝗ｲ謖�螳�
+    ## 株価の範囲指定
     """)
     ymin, ymax = st.sidebar.slider(
-        '遽�蝗ｲ繧呈欠螳壹＠縺ｦ縺上□縺輔＞縲�',
+        '範囲を指定してください。',
         0.0, 3500.0, (0.0, 3500.0)
     )
 
@@ -55,16 +55,16 @@ try:
     df = get_data(days, tickers)
 
     companies = st.multiselect(
-        '莨夂､ｾ蜷阪ｒ驕ｸ謚槭＠縺ｦ縺上□縺輔＞縲�',
+        '企業名を選択してください。',
         list(df.index),
         ['google', 'amazon', 'facebook', 'apple']
     )
 
     if not companies:
-        st.error('蟆代↑縺上→繧ゆｸ遉ｾ縺ｯ驕ｸ繧薙〒縺上□縺輔＞縲�')
+        st.error('少なくとも一社は選んでください。')
     else:
         data = df.loc[companies]
-        st.write('### 譬ｪ萓｡ (USD)', data.sort_index())
+        st.write('### 株価 (USD)', data.sort_index())
         data = data.T.reset_index()
         data = pd.melt(data, id_vars=['Date']).rename(
         columns={'value': 'Stock Prices(USD)'}
@@ -82,5 +82,5 @@ try:
         st.altair_chart(chart, use_container_width=True)
 except:
     st.error(
-        "縺翫▲縺ｨ�ｼ√↑縺ｫ縺九お繝ｩ繝ｼ縺瑚ｵｷ縺阪※縺�繧九ｈ縺�縺ｧ縺吶�"
+        "おっと！なにかエラーが起きているようです。"
     )
