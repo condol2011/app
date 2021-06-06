@@ -3,21 +3,21 @@ import yfinance as yf
 import altair as alt
 import streamlit as st
 
-st.title('ç±³å›½æ ªä¾¡å¯è¦–åŒ–ã‚¢ãƒ—ãƒª')
+st.title('•Ä‘Š”‰¿‰Â‹‰»ƒAƒvƒŠ')
 
 st.sidebar.write("""
-# GAFAæ ªä¾¡
-ã“ã¡ã‚‰ã¯æ ªä¾¡å¯è¦–åŒ–ãƒ„ãƒ¼ãƒ«ã§ã™ã€‚ä»¥ä¸‹ã®ã‚ªãƒ—ã‚·ãƒ§ãƒ³ã‹ã‚‰è¡¨ç¤ºæ—¥æ•°ã‚’æŒ‡å®š
+# GAFAŠ”‰¿
+‚±‚¿‚ç‚ÍŠ”‰¿‰Â‹‰»ƒc[ƒ‹‚Å‚·BˆÈ‰º‚ÌƒIƒvƒVƒ‡ƒ“‚©‚ç•\¦“ú”‚ğw’è
 """)
 
 st.sidebar.write("""
-## è¡¨ç¤ºæ—¥æ•°é¸æŠ
+## •\¦“ú”‘I‘ğ
 """)
 
-days = st.sidebar.slider('æ—¥æ•°', 1, 50, 20)
+days = st.sidebar.slider('“ú”', 1, 50, 20)
 
 st.write(f"""
-### éå» **{days}æ—¥é–“** ã®GAFAæ ªä¾¡
+### ‰ß‹ **{days}“úŠÔ** ‚ÌGAFAŠ”‰¿
 """)
 
 @st.cache
@@ -36,10 +36,10 @@ def get_data(days, tickers):
 
 try:
     st.sidebar.write("""
-    ## æ ªä¾¡ã®ç¯„å›²æŒ‡å®š
+    ## Š”‰¿‚Ì”ÍˆÍw’è
     """)
     ymin, ymax = st.sidebar.slider(
-        'ç¯„å›²ã‚’æŒ‡å®šã—ã¦ãã ã•ã„ã€‚',
+        '”ÍˆÍ‚ğw’è‚µ‚Ä‚­‚¾‚³‚¢B',
         0.0, 3500.0, (0.0, 3500.0)
     )
 
@@ -55,16 +55,16 @@ try:
     df = get_data(days, tickers)
 
     companies = st.multiselect(
-        'ä¼æ¥­åã‚’é¸æŠã—ã¦ãã ã•ã„ã€‚',
+        'Šé‹Æ–¼‚ğ‘I‘ğ‚µ‚Ä‚­‚¾‚³‚¢B',
         list(df.index),
         ['google', 'amazon', 'facebook', 'apple']
     )
 
     if not companies:
-        st.error('å°‘ãªãã¨ã‚‚ä¸€ç¤¾ã¯é¸ã‚“ã§ãã ã•ã„ã€‚')
+        st.error('­‚È‚­‚Æ‚àˆêĞ‚Í‘I‚ñ‚Å‚­‚¾‚³‚¢B')
     else:
         data = df.loc[companies]
-        st.write('### æ ªä¾¡ (USD)', data.sort_index())
+        st.write('### Š”‰¿ (USD)', data.sort_index())
         data = data.T.reset_index()
         data = pd.melt(data, id_vars=['Date']).rename(
         columns={'value': 'Stock Prices(USD)'}
@@ -82,5 +82,5 @@ try:
         st.altair_chart(chart, use_container_width=True)
 except:
     st.error(
-        "ãŠã£ã¨ï¼ãªã«ã‹ã‚¨ãƒ©ãƒ¼ãŒèµ·ãã¦ã„ã‚‹ã‚ˆã†ã§ã™ã€‚"
+        "‚¨‚Á‚ÆI‚È‚É‚©ƒGƒ‰[‚ª‹N‚«‚Ä‚¢‚é‚æ‚¤‚Å‚·B"
     )
